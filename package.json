@@ -3,6 +3,11 @@
   "displayName": "Terminal Roast!",
   "description": "VS Code doesn't play any sound when a terminal command fails — this extension changes that! Automatically plays a sound effect when your terminal command returns an error. Choose from a variety of built-in sound effects to make your debugging experience more fun and noticeable.",
   "version": "0.0.1",
+  "publisher": "DWcoco008",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DWcoco08/error-sound.git"
+  },
   "engines": {
     "vscode": "^1.109.0"
   },

@@ -1,71 +1,32 @@
-# error-sound README
+# Terminal Roast!
 
-This is the README for your extension "error-sound". After writing up a brief description, we recommend including the following sections.
+VS Code doesn't play any sound when a terminal command fails — this extension changes that! Automatically plays a sound effect when your terminal command returns an error. Choose from a variety of built-in sound effects to make your debugging experience more fun and noticeable.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+- Automatically detects terminal command errors (non-zero exit code)
+- Plays a sound effect when a command fails
+- Choose from built-in sounds: **Bruh!**, **Fahhhh!**, **Mixi!**, **Bonk!**
+- Works on both Windows and Linux
+- Toggle on/off anytime
 
-For example if there is an image subfolder under your extension project workspace:
+## Commands
 
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
-
-## Requirements
-
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+- `Terminal Roast: Select Error Sound` — Pick your favorite error sound
+- `Terminal Roast: Toggle On/Off` — Enable or disable the extension
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+- `terminalRoast.enabled` — Enable/disable error sound (default: `true`)
+- `terminalRoast.sound` — Choose which sound to play (`bruh`, `fahhhh`, `mixi`, `bonk`)
 
-For example:
+## Requirements
 
-This extension contributes the following settings:
-
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
+- **Linux**: `mpg123`, `ffplay`, or `aplay` installed for audio playback
+- **Windows**: No additional requirements
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
+### 0.0.1
 
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+Initial release with 4 built-in sound effects.
