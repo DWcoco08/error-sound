@@ -6,6 +6,7 @@ const SOUNDS: Record<string, string> = {
 	bruh: 'bruh.mp3',
 	fahhhh: 'fahhhh.mp3',
 	mixi: 'mixi.mp3',
+	bonk: 'bonk.mp3',
 };
 
 let currentProcess: cp.ChildProcess | null = null;
@@ -64,6 +65,7 @@ export function activate(context: vscode.ExtensionContext) {
 			{ label: 'Bruh!', value: 'bruh' },
 			{ label: 'Fahhhh!', value: 'fahhhh' },
 			{ label: 'Mixi!', value: 'mixi' },
+			{ label: 'Bonk!', value: 'bonk' },
 		];
 
 		const selected = await vscode.window.showQuickPick(items, {

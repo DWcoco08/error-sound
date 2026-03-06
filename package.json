@@ -35,8 +35,8 @@
         "terminalRoast.sound": {
           "type": "string",
           "default": "bruh",
-          "enum": ["bruh", "fahhhh", "mixi"],
-          "enumItemLabels": ["Bruh!", "Fahhhh!", "Mixi!"],
+          "enum": ["bruh", "fahhhh", "mixi", "bonk"],
+          "enumItemLabels": ["Bruh!", "Fahhhh!", "Mixi!", "Bonk!"],
           "description": "Choose which sound to play on terminal error"
         }
       }
