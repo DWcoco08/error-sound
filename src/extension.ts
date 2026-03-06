@@ -8,30 +8,42 @@ const SOUNDS: Record<string, string> = {
 	mixi: 'mixi.mp3',
 };
 
+let currentProcess: cp.ChildProcess | null = null;
+
+function killCurrentSound() {
+	if (currentProcess) {
+		currentProcess.kill();
+		currentProcess = null;
+	}
+}
+
 function playSound(extensionPath: string, soundFile: string) {
+	killCurrentSound();
+
 	const soundPath = path.join(extensionPath, 'sounds', soundFile);
 	const platform = process.platform;
 
 	if (platform === 'win32') {
-		cp.exec(
-			`powershell -c "(New-Object Media.SoundPlayer '${soundPath}').PlaySync()"`,
-			// SoundPlayer only supports WAV; use MediaPlayer for MP3
-		);
-		cp.exec(
-			`powershell -c "Add-Type -AssemblyName PresentationCore; $p = New-Object System.Windows.Media.MediaPlayer; $p.Open([Uri]'${soundPath}'); $p.Play(); Start-Sleep -Seconds 3"`,
+		currentProcess = cp.exec(
+			`powershell -c "Add-Type -AssemblyName PresentationCore; $p = New-Object System.Windows.Media.MediaPlayer; $p.Open([Uri]'${soundPath}'); $p.Play(); Start-Sleep -Seconds 10"`,
 		);
 	} else {
-		// Linux: try common audio players
-		cp.exec(`mpg123 "${soundPath}" || ffplay -nodisp -autoexit "${soundPath}" || aplay "${soundPath}"`, (err) => {
-			if (err) {
-				cp.exec(`paplay "${soundPath}"`);
+		currentProcess = cp.exec(
+			`mpg123 "${soundPath}" || ffplay -nodisp -autoexit "${soundPath}" || aplay "${soundPath}"`,
+			(err) => {
+				if (err && !err.killed) {
+					currentProcess = cp.exec(`paplay "${soundPath}"`);
+				}
 			}
-		});
+		);
 	}
+
+	currentProcess.on('exit', () => {
+		currentProcess = null;
+	});
 }
 
 export function activate(context: vscode.ExtensionContext) {
-	// Listen for terminal command execution completion
 	const shellExecDisposable = vscode.window.onDidEndTerminalShellExecution((event) => {
 		const config = vscode.workspace.getConfiguration('terminalRoast');
 		const enabled = config.get<boolean>('enabled', true);
@@ -40,7 +52,6 @@ export function activate(context: vscode.ExtensionContext) {
 			return;
 		}
 
-		// Exit code !== 0 means the command failed
 		if (event.exitCode !== undefined && event.exitCode !== 0) {
 			const soundKey = config.get<string>('sound', 'bruh');
 			const soundFile = SOUNDS[soundKey] || SOUNDS['bruh'];
@@ -48,7 +59,6 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
-	// Command: Select sound
 	const selectSoundDisposable = vscode.commands.registerCommand('error-sound.selectSound', async () => {
 		const items = [
 			{ label: 'Bruh!', value: 'bruh' },
@@ -67,7 +77,6 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
-	// Command: Toggle on/off
 	const toggleDisposable = vscode.commands.registerCommand('error-sound.toggle', async () => {
 		const config = vscode.workspace.getConfiguration('terminalRoast');
 		const enabled = config.get<boolean>('enabled', true);
@@ -78,4 +87,6 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(shellExecDisposable, selectSoundDisposable, toggleDisposable);
 }
 
-export function deactivate() {}
+export function deactivate() {
+	killCurrentSound();
+}
